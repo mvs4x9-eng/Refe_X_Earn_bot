@@ -1,20 +1,19 @@
-
 <!DOCTYPE html>
 <html lang="bn">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Refe X Earn</title>
+<title>Refe X Earn - Pro Store & Earning</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
 :root{
  --blue:#2864d7;--purple:#7855d9;--gold:#d8a33d;
  --ink:#202943;--muted:#78839a;--line:#e8edf5;
- --bg:#f5f7fc;--green:#159d68;
+ --bg:#f5f7fc;--green:#159d68;--orange:#ff6600;
 }
 *{box-sizing:border-box}
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}
-button,input,textarea{font:inherit}
+button,input,textarea,select{font:inherit}
 button{cursor:pointer}
 .app{max-width:480px;min-height:100vh;margin:auto;background:#fff;padding-bottom:90px}
 header{display:flex;align-items:center;gap:11px;padding:14px;background:white;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
@@ -30,15 +29,15 @@ h2{font-size:19px;margin:7px 0 15px}
 h3{font-size:15px;margin:0 0 10px}
 p{line-height:1.55}
 .muted{font-size:12px;color:var(--muted);line-height:1.6}
-.hero{background:linear-gradient(125deg,#1d3f91,#386fe0 65%,#8062dc);padding:21px;border-radius:21px;color:#fff;position:relative;overflow:hidden}
-.hero:after{content:"";position:absolute;width:130px;height:130px;border:23px solid #ffffff18;border-radius:50%;right:-32px;top:-40px}
+.hero{background:linear-gradient(125deg,#1d3f91,#386fe0 65%,#8062dc);padding:20px;border-radius:21px;color:#fff;position:relative;overflow:hidden}
 .hero small{opacity:.85}
-.hero h1{font-size:33px;margin:9px 0}
-.hero-bottom{font-size:12px;opacity:.85}
+.hero h1{font-size:28px;margin:6px 0}
+.wallet-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.2)}
+.wallet-col b{font-size:17px}
 .section-head{display:flex;justify-content:space-between;align-items:center;margin:20px 0 11px}
 .grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
 .tile{border:1px solid var(--line);background:#fff;border-radius:16px;padding:13px 9px;text-align:center;color:var(--ink);min-height:105px;box-shadow:0 3px 12px #26395b08}
-.tile img{width:45px;height:45px;object-fit:contain;display:block;margin:0 auto 9px}
+.tile img{width:42px;height:42px;object-fit:contain;display:block;margin:0 auto 9px}
 .tile b{font-size:13px}
 .stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-top:13px}
 .stat{border:1px solid var(--line);border-radius:14px;padding:13px}
@@ -47,34 +46,34 @@ p{line-height:1.55}
 .card{border:1px solid var(--line);border-radius:17px;padding:15px;margin:12px 0;background:#fff}
 .field{margin:13px 0}
 label{font-size:13px;font-weight:700;display:block;margin-bottom:7px}
-input,textarea{width:100%;border:1px solid #dfe5ef;border-radius:11px;padding:13px;background:white;color:var(--ink);outline:none}
+input,textarea,select{width:100%;border:1px solid #dfe5ef;border-radius:11px;padding:13px;background:white;color:var(--ink);outline:none}
 textarea{min-height:90px;resize:vertical}
-input:focus,textarea:focus{border-color:var(--blue)}
+input:focus,textarea:focus,select:focus{border-color:var(--blue)}
 .primary{border:0;background:linear-gradient(100deg,var(--blue),var(--purple));color:white;padding:14px;border-radius:11px;width:100%;font-weight:700;margin-top:9px}
 .secondary{border:1px solid var(--line);background:#fff;padding:12px;border-radius:11px;width:100%;margin-top:9px;color:var(--ink);font-weight:600}
 .brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
-.brand{border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px 5px;color:var(--ink)}
-.brand img{width:48px;height:43px;object-fit:contain;display:block;margin:0 auto 7px}
+.brand{border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px 5px;color:var(--ink);text-align:center}
+.brand img{width:44px;height:40px;object-fit:contain;display:block;margin:0 auto 7px}
 .brand b{font-size:12px}
 .brand.selected{border:2px solid var(--blue);background:#f5f8ff}
 .task-row{display:flex;align-items:center;gap:11px;border:1px solid var(--line);border-radius:14px;padding:12px;margin:9px 0;background:#fff}
-.task-row img{width:46px;height:46px;object-fit:contain;flex-shrink:0}
+.task-row img{width:42px;height:42px;object-fit:contain;flex-shrink:0}
 .task-info{flex:1;min-width:0}
 .task-info b{font-size:13px}
 .task-info small{display:block;color:var(--muted);margin-top:5px;font-size:11px}
 .view-btn{border:0;background:#edf3ff;color:#245bc4;border-radius:9px;padding:9px 13px;font-weight:700}
 .detail-head{display:flex;align-items:center;gap:12px;margin:10px 0 17px}
-.detail-head img{width:58px;height:58px;object-fit:contain}
+.detail-head img{width:54px;height:54px;object-fit:contain}
 .step{padding:12px;background:#f7f8fc;border-radius:11px;margin:8px 0;font-size:13px;line-height:1.6}
 .badge{display:inline-block;background:#f1edff;color:#6846c6;border-radius:30px;padding:5px 10px;font-size:11px}
 .upload-box{border:2px dashed #aebddd;background:#f7f9ff;border-radius:15px;padding:18px;text-align:center}
-.upload-box img{width:65px;height:65px;object-fit:contain}
+.upload-box img{width:60px;height:60px;object-fit:contain}
 .upload-box input{margin-top:12px;background:#fff}
 .preview{width:100%;max-height:300px;object-fit:contain;border-radius:12px;margin-top:12px;display:none}
 .profile-top{display:flex;align-items:center;gap:13px}
 .avatar{width:67px;height:67px;border-radius:50%;object-fit:cover;background:#edf1fa}
 .profile-link{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:13px 0;color:var(--ink);text-decoration:none}
-.profile-link img{width:39px;height:39px;object-fit:contain}
+.profile-link img{width:36px;height:36px;object-fit:contain}
 .profile-link div{flex:1}
 .profile-link b{font-size:13px}
 .profile-link small{display:block;color:var(--muted);margin-top:4px}
@@ -86,10 +85,11 @@ input:focus,textarea:focus{border-color:var(--blue)}
 .back{border:0;background:#eef3ff;color:#245bc4;padding:9px 13px;border-radius:9px;margin-bottom:12px}
 .bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(5,1fr);background:#fff;border-top:1px solid var(--line);padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:10}
 .bottom-nav button{border:0;background:none;color:#8992a5;font-size:10px}
-.bottom-nav img{width:25px;height:25px;display:block;margin:0 auto 4px;object-fit:contain}
+.bottom-nav img{width:24px;height:24px;display:block;margin:0 auto 4px;object-fit:contain}
 .bottom-nav button.active{color:var(--blue);font-weight:bold}
 .toast{display:none;position:fixed;z-index:20;bottom:95px;left:50%;transform:translateX(-50%);background:#202943;color:white;padding:12px 17px;border-radius:12px;font-size:13px;max-width:90%;text-align:center}
 .empty{text-align:center;padding:25px;color:var(--muted);font-size:13px}
+.instruction-box{background:#fff8e6;border:1px solid #ffeeba;padding:12px;border-radius:11px;font-size:13px;line-height:1.6;margin-bottom:12px}
 </style>
 </head>
 <body>
@@ -99,7 +99,7 @@ input:focus,textarea:focus{border-color:var(--blue)}
  <div class="brand-logo">RX</div>
  <div>
   <div class="header-title">Refe X Earn</div>
-  <div class="header-sub">Your Reward Platform</div>
+  <div class="header-sub">IP, VPN & Reward Platform</div>
  </div>
  <div class="user-mini">
   <b id="headerName">User</b><br>
@@ -112,21 +112,24 @@ input:focus,textarea:focus{border-color:var(--blue)}
 <!-- HOME -->
 <section class="page active" id="home">
  <div class="hero">
-  <small>Referral Wallet Balance</small>
-  <h1>৳ <span id="balance">0.00</span></h1>
-  <div class="hero-bottom">Your earning and rewards</div>
+  <small>Main Wallet Balances</small>
+  <div class="wallet-box">
+   <div class="wallet-col"><small>Income Balance</small><br><b>৳ <span id="balance">0.00</span></b></div>
+   <div class="wallet-col"><small>Deposit Balance</small><br><b>৳ <span id="depositBalance">0.00</span></b></div>
+  </div>
+  <button class="primary" style="background:#fff;color:#2864d7;margin-top:14px" onclick="go('deposit')">+ Deposit Money Now</button>
  </div>
 
- <div class="section-head"><h3>Quick Services</h3></div>
+ <div class="section-head"><h3>Quick Services & Store</h3></div>
  <div class="grid">
+  <button class="tile" onclick="go('proxy')"><img data-icon="proxy"><b>Buy Proxy (IP)</b></button>
+  <button class="tile" onclick="go('vpn')"><img data-icon="vpn"><b>Buy VPN</b></button>
+  <button class="tile" onclick="go('deposit')"><img data-icon="deposit"><b>Deposit Money</b></button>
   <button class="tile" onclick="go('withdraw')"><img data-icon="bkash"><b>Withdraw Money</b></button>
   <button class="tile" onclick="go('recharge')"><img data-icon="phone"><b>Mobile Recharge</b></button>
   <button class="tile" onclick="go('categories')"><img data-icon="task"><b>Daily Tasks</b></button>
   <button class="tile" onclick="go('refer')"><img data-icon="refer"><b>Refer & Earn</b></button>
-  <button class="tile" onclick="go('ads')"><img data-icon="ads"><b>Watch Ads</b></button>
-  <button class="tile" onclick="go('gift')"><img data-icon="gift"><b>Gift Code</b></button>
   <button class="tile" onclick="go('history')"><img data-icon="history"><b>History</b></button>
-  <button class="tile" onclick="go('profile')"><img data-icon="profile"><b>My Profile</b></button>
  </div>
 
  <div class="section-head"><h3>Account Overview</h3></div>
@@ -138,11 +141,83 @@ input:focus,textarea:focus{border-color:var(--blue)}
  </div>
 </section>
 
+<!-- PROXY (IP) STORE -->
+<section class="page" id="proxy">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2>Buy Proxy (IP) Packages</h2>
+ <p class="muted">আপনার পছন্দমতো আইপি ও এমবি প্যাকেজ সিলেক্ট করুন। ইনস্ট্যান্ট অটো ডেলিভারি!</p>
+ <div class="card">
+  <div class="field">
+   <label>Select IP Category / Location</label>
+   <select id="proxyCategory" onchange="updateProxyPackages()">
+    <option value="us">USA High-Speed IP</option>
+    <option value="uk">UK Residential IP</option>
+    <option value="bd">Bangladesh Mobile IP</option>
+   </select>
+  </div>
+  <div id="proxyPackageList"></div>
+ </div>
+</section>
+
+<!-- VPN STORE -->
+<section class="page" id="vpn">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2>Buy Premium VPN</h2>
+ <p class="muted">৭ দিনের জন্য প্রিমিয়াম ভিপিএন অ্যাকাউন্ট। কেনার সাথে সাথে ইউজারনেম/ইমেইল ও পাসওয়ার্ড পেয়ে যাবেন।</p>
+ <div class="card">
+  <div class="brand-grid">
+   <button class="brand" onclick="selectVpn('Nord VPN', 150, this)"><img data-icon="vpn"><b>Nord VPN</b><br><small>৳150 / 7 Days</small></button>
+   <button class="brand" onclick="selectVpn('Panda VPN', 120, this)"><img data-icon="vpn"><b>Panda VPN</b><br><small>৳120 / 7 Days</small></button>
+   <button class="brand" onclick="selectVpn('Thunder VPN', 100, this)"><img data-icon="vpn"><b>Thunder VPN</b><br><small>৳100 / 7 Days</small></button>
+  </div>
+  <div class="field" style="margin-top:15px"><label>Selected VPN Package</label><input id="selectedVpnName" readonly placeholder="Select a VPN above"></div>
+  <div class="field"><label>Pay Using Balance Type</label>
+   <select id="vpnPayWallet">
+    <option value="deposit">Deposit Balance</option>
+    <option value="income">Income/Task Balance</option>
+   </select>
+  </div>
+  <button class="primary" onclick="buyVpnConfirm()">Confirm & Purchase VPN</button>
+ </div>
+ <div id="vpnDeliveryBox" class="card" style="display:none;background:#f0fff4;border-color:#159d68">
+  <h3 style="color:#159d68">VPN Purchased Successfully!</h3>
+  <div id="vpnCredentials" style="font-family:monospace;font-size:13px;line-height:1.6"></div>
+ </div>
+</section>
+
+<!-- DEPOSIT -->
+<section class="page" id="deposit">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2>Deposit Money</h2>
+ <div class="card">
+  <h3>Select Payment Method</h3>
+  <div class="brand-grid">
+   <button class="brand" onclick="chooseDepositMethod('bKash',this)"><img data-icon="bkash"><b>bKash</b></button>
+   <button class="brand" onclick="chooseDepositMethod('Nagad',this)"><img data-icon="nagad"><b>Nagad</b></button>
+   <button class="brand" onclick="chooseDepositMethod('Rocket',this)"><img data-icon="rocket"><b>Rocket</b></button>
+   <button class="brand" onclick="chooseDepositMethod('Upay',this)"><img data-icon="upay"><b>Upay</b></button>
+  </div>
+  
+  <div class="field"><label>Selected Method</label><input id="depositMethod" readonly placeholder="Select Gateway"></div>
+  
+  <div class="instruction-box" id="depositInstruction" style="display:none">
+   <b>নির্দেশনা:</b> নিচে দেওয়া অফিশিয়াল নম্বরে আপনার <span id="gatewayNameText"></span> অ্যাকাউন্ট থেকে **Send Money** করুন। এরপর নিচের বক্সে আপনার পেমেন্ট নম্বর ও TrxID দিন।<br>
+   <strong style="color:var(--blue);font-size:15px">Personal Number: <span id="adminAgentNumber">01700000000</span></strong>
+  </div>
+
+  <div class="field"><label>Deposit Amount (BDT)</label><input id="depositAmount" type="number" min="50" placeholder="Minimum ৳50"></div>
+  <div class="field"><label>Your Sender Mobile Number</label><input id="senderNumber" inputmode="numeric" placeholder="01XXXXXXXXX"></div>
+  <div class="field"><label>Transaction ID (TrxID)</label><input id="trxId" placeholder="e.g. 9G8H76F5E4"></div>
+  
+  <button class="primary" onclick="submitDeposit()">Submit Deposit Request</button>
+ </div>
+</section>
+
 <!-- TASK CATEGORIES -->
 <section class="page" id="categories">
  <button class="back" onclick="go('home')">← Back</button>
  <h2>Task Categories</h2>
- <p class="muted">প্রতিটি ক্যাটাগরির View বাটনে চাপ দিলে সেই ক্যাটাগরির কাজগুলো দেখা যাবে।</p>
+ <p class="muted">প্রতিটি ক্যাটাগরির কাজ করে ইনকাম করুন।</p>
  <div id="categoryList"></div>
 </section>
 
@@ -165,10 +240,10 @@ input:focus,textarea:focus{border-color:var(--blue)}
    </div>
   </div>
 
-  <h3>Admin-এর দেওয়া Task Rules</h3>
+  <h3>Admin Rules</h3>
   <div id="detailRules"></div>
 
-  <h3 style="margin-top:18px">কাজের ধাপ</h3>
+  <h3 style="margin-top:18px">Steps</h3>
   <div id="detailSteps"></div>
 
   <div class="field">
@@ -180,34 +255,15 @@ input:focus,textarea:focus{border-color:var(--blue)}
   <div class="field">
    <label>Screenshot Upload (Required)</label>
    <div class="upload-box">
-    <img data-icon="upload" alt="Upload Screenshot">
-    <p><b>কাজ সম্পন্ন করার Screenshot দিন</b></p>
-    <p class="muted">JPG, PNG বা WEBP • সর্বোচ্চ ৫ MB</p>
-    <input id="taskScreenshot" type="file" accept="image/png,image/jpeg,image/webp" onchange="previewScreenshot(event)">
-    <img id="screenshotPreview" class="preview" alt="Screenshot Preview">
+    <img data-icon="upload" alt="Upload">
+    <p><b>কাজের স্ক্রিনশট দিন</b></p>
+    <input id="taskScreenshot" type="file" accept="image/*" onchange="previewScreenshot(event)">
+    <img id="screenshotPreview" class="preview" alt="Preview">
    </div>
   </div>
 
-  <div class="field">
-   <label>Additional Note</label>
-   <textarea id="taskProof" placeholder="প্রয়োজন হলে অতিরিক্ত তথ্য লিখুন"></textarea>
-  </div>
-
-  <button class="primary" onclick="submitTask()">Submit Screenshot & Task</button>
-  <p class="muted">Screenshot ছাড়া Task জমা দেওয়া যাবে না। জমা দেওয়া কাজ Admin যাচাই করবে। Approved হলে Reward যোগ হবে।</p>
- </div>
-</section>
-
-<!-- ADS -->
-<section class="page" id="ads">
- <button class="back" onclick="go('home')">← Back</button>
- <h2>Watch Ads & Earn</h2>
- <div class="card" style="text-align:center">
-  <img data-icon="ads" width="80" alt="Advertisement">
-  <h3>Advertisement Rewards</h3>
-  <p class="muted">বিজ্ঞাপন দেখে ইনকাম করুন। বিজ্ঞাপনের আসল লিংক ও Reward Provider Admin Backend থেকে সংযুক্ত হবে।</p>
-  <button class="primary" onclick="startAd()">Watch Advertisement</button>
-  <p class="muted" id="adStatus">Advertisement provider connection required.</p>
+  <div class="field"><label>Note</label><textarea id="taskProof" placeholder="অতিরিক্ত তথ্য..."></textarea></div>
+  <button class="primary" onclick="submitTask()">Submit Task Proof</button>
  </div>
 </section>
 
@@ -216,16 +272,17 @@ input:focus,textarea:focus{border-color:var(--blue)}
  <button class="back" onclick="go('home')">← Back</button>
  <h2>Withdraw Money</h2>
  <div class="card">
-  <h3>Payment Method</h3>
+  <h3>Payment Method (Income Balance Only)</h3>
   <div class="brand-grid">
    <button class="brand" onclick="chooseWithdraw('bKash',this)"><img data-icon="bkash"><b>bKash</b></button>
    <button class="brand" onclick="chooseWithdraw('Nagad',this)"><img data-icon="nagad"><b>Nagad</b></button>
    <button class="brand" onclick="chooseWithdraw('Rocket',this)"><img data-icon="rocket"><b>Rocket</b></button>
+   <button class="brand" onclick="chooseWithdraw('Upay',this)"><img data-icon="upay"><b>Upay</b></button>
   </div>
   <div class="field"><label>Selected Wallet</label><input id="withdrawMethod" readonly placeholder="Select Wallet"></div>
   <div class="field"><label>Account Number</label><input id="withdrawNumber" inputmode="numeric" placeholder="01XXXXXXXXX"></div>
   <div class="field"><label>Withdrawal Amount (BDT)</label><input id="withdrawAmount" type="number" min="30" placeholder="Minimum ৳30"></div>
-  <p class="muted">Minimum Withdrawal: ৳30<br>Mode: Admin Approval</p>
+  <p class="muted">Minimum Withdrawal: ৳30<br>নোট: ৩০ টাকা ব্যালেন্স না থাকলে বা ডিপোজিট ব্যালেন্স দিয়ে উইথড্র করা যাবে না।</p>
   <button class="primary" onclick="requestWithdraw()">Submit Withdrawal Request</button>
  </div>
 </section>
@@ -242,11 +299,12 @@ input:focus,textarea:focus{border-color:var(--blue)}
    <button class="brand" onclick="chooseOperator('Banglalink',this)"><img data-icon="banglalink"><b>Banglalink</b></button>
    <button class="brand" onclick="chooseOperator('Airtel',this)"><img data-icon="airtel"><b>Airtel</b></button>
    <button class="brand" onclick="chooseOperator('Teletalk',this)"><img data-icon="teletalk"><b>Teletalk</b></button>
+   <button class="brand" onclick="chooseOperator('Skitto',this)"><img data-icon="skitto"><b>Skitto</b></button>
   </div>
-  <div class="field"><label>Selected Operator</label><input id="operator" readonly placeholder="Select Operator"></div>
+  <div class="field"><label>Operator</label><input id="operator" readonly placeholder="Select Operator"></div>
   <div class="field"><label>Mobile Number</label><input id="rechargeNumber" inputmode="numeric" placeholder="01XXXXXXXXX"></div>
-  <div class="field"><label>Recharge Amount</label><input id="rechargeAmount" type="number" min="20" max="5000" placeholder="৳20 - ৳5000"></div>
-  <p class="muted">Minimum ৳20 • Maximum ৳5,000<br>Balance Source: Referral Wallet<br>Mode: Admin Approval</p>
+  <div class="field"><label>Amount</label><input id="rechargeAmount" type="number" min="20" placeholder="৳20 - ৳5000"></div>
+  <p class="muted">Minimum ৳20 রিচার্জ।</p>
   <button class="primary" onclick="requestRecharge()">Submit Recharge Request</button>
  </div>
 </section>
@@ -256,29 +314,17 @@ input:focus,textarea:focus{border-color:var(--blue)}
  <button class="back" onclick="go('home')">← Back</button>
  <h2>Refer & Earn</h2>
  <div class="card" style="text-align:center">
-  <img data-icon="refer" width="80" alt="Referral">
-  <h3>Invite Friends & Earn</h3>
-  <p class="muted">আপনার Referral Link শেয়ার করুন। যোগ্য সরাসরি Referral-এর আয় থেকে ৫% কমিশনের নিয়ম প্রযোজ্য হবে।</p>
+  <img data-icon="refer" width="70" alt="Referral">
+  <h3>Direct Mini App Link</h3>
+  <p class="muted">এই লিঙ্কে ক্লিক করলেই সরাসরি মিনি অ্যাপ ওপেন হবে। প্রতি রেফারে ১০ টাকা (শর্ত সাপেক্ষে) ও ৫% কমিশন!</p>
   <label>Your Referral Link</label>
   <input id="refLink" readonly>
   <button class="primary" onclick="copyReferral()">Copy Referral Link</button>
-  <button class="secondary" onclick="shareReferral()">Share Referral Link</button>
+  <button class="secondary" onclick="shareReferral()">Share Link</button>
  </div>
  <div class="stats">
   <div class="stat"><small>Total Referrals</small><strong id="refTotal">0</strong></div>
   <div class="stat"><small>Completed Referrals</small><strong id="refCompleted">0</strong></div>
- </div>
-</section>
-
-<!-- GIFT -->
-<section class="page" id="gift">
- <button class="back" onclick="go('home')">← Back</button>
- <h2>Gift Code</h2>
- <div class="card" style="text-align:center">
-  <img data-icon="gift" width="75" alt="Gift Code">
-  <label>Enter Gift Code</label>
-  <input id="giftCode" placeholder="Enter your code">
-  <button class="primary" onclick="claimGift()">Claim Gift Code</button>
  </div>
 </section>
 
@@ -294,46 +340,30 @@ input:focus,textarea:focus{border-color:var(--blue)}
  <h2>My Profile</h2>
  <div class="card">
   <div class="profile-top">
-   <img class="avatar" id="profilePhoto" alt="Telegram Profile Photo">
+   <img class="avatar" id="profilePhoto" alt="Avatar">
    <div>
     <h3 id="profileName">User</h3>
     <div class="muted" id="profileUsername">@username</div>
    </div>
   </div>
+  <div style="margin-top:15px;display:flex;gap:10px">
+   <button class="primary" onclick="go('deposit')">+ Deposit Money</button>
+   <button class="secondary" onclick="go('withdraw')">Withdraw</button>
+  </div>
  </div>
 
  <div class="card">
-  <h3>Telegram Account Information</h3>
-  <div class="info-row"><b>Telegram Name</b><span id="telegramName">Not available</span></div>
-  <div class="info-row"><b>Telegram Username</b><span id="telegramUsername">Not available</span></div>
-  <div class="info-row"><b>Telegram User ID</b><span id="telegramUserId">Not available</span></div>
-  <div class="info-row"><b>Telegram Chat ID</b><span id="telegramChatId">Waiting for bot connection</span></div>
+  <h3>Telegram Info</h3>
+  <div class="info-row"><b>User ID</b><span id="telegramUserId">Not available</span></div>
+  <div class="info-row"><b>Income Balance</b><span id="profBalance">৳0.00</span></div>
+  <div class="info-row"><b>Deposit Balance</b><span id="profDepositBalance">৳0.00</span></div>
  </div>
 
  <div class="card">
-  <h3>My Account</h3>
-  <a class="profile-link" href="#" onclick="go('refer');return false">
-   <img data-icon="refer"><div><b>My Referral Link</b><small>Referral information</small></div><span>›</span>
-  </a>
-  <a class="profile-link" href="#" onclick="go('history');return false">
-   <img data-icon="history"><div><b>Transaction History</b><small>All requests and transactions</small></div><span>›</span>
-  </a>
-  <a class="profile-link" href="#" onclick="go('withdraw');return false">
-   <img data-icon="wallet"><div><b>My Wallet</b><small>Balance and withdrawal</small></div><span>›</span>
-  </a>
- </div>
-
- <div class="card">
-  <h3>Support & Community</h3>
-  <a class="profile-link" id="supportChannel" href="#">
-   <img data-icon="telegram"><div><b>Support Channel</b><small>Official support channel</small></div><span>↗</span>
-  </a>
-  <a class="profile-link" id="communityGroup" href="#">
-   <img data-icon="group"><div><b>Community Group</b><small>Telegram community group</small></div><span>↗</span>
-  </a>
-  <a class="profile-link" id="supportChat" href="#">
-   <img data-icon="support"><div><b>Contact Support</b><small>Get help from support</small></div><span>↗</span>
-  </a>
+  <h3>Quick Links</h3>
+  <a class="profile-link" href="#" onclick="go('proxy');return false"><img data-icon="proxy"><div><b>Buy Proxy / IP</b></div><span>›</span></a>
+  <a class="profile-link" href="#" onclick="go('vpn');return false"><img data-icon="vpn"><div><b>Buy VPN Accounts</b></div><span>›</span></a>
+  <a class="profile-link" href="#" onclick="go('refer');return false"><img data-icon="refer"><div><b>Refer & Earn</b></div><span>›</span></a>
  </div>
 </section>
 
@@ -341,8 +371,8 @@ input:focus,textarea:focus{border-color:var(--blue)}
 
 <nav class="bottom-nav">
  <button class="active" onclick="go('home',this)"><img data-icon="home">Home</button>
- <button onclick="go('categories',this)"><img data-icon="task">Tasks</button>
- <button onclick="go('withdraw',this)"><img data-icon="wallet">Wallet</button>
+ <button onclick="go('proxy',this)"><img data-icon="proxy">Proxy</button>
+ <button onclick="go('deposit',this)"><img data-icon="deposit">Deposit</button>
  <button onclick="go('refer',this)"><img data-icon="refer">Refer</button>
  <button onclick="go('profile',this)"><img data-icon="profile">Profile</button>
 </nav>
@@ -350,25 +380,28 @@ input:focus,textarea:focus{border-color:var(--blue)}
 </div>
 
 <script>
-/* ==============================================
-   CONFIGURATION
-   API_BASE_URL must be your deployed backend URL.
-   Do not put bot token or Firebase Admin secrets here.
-================================================ */
 const CONFIG={
  API_BASE_URL:"",
  BOT_USERNAME:"Refe_X_Earn_bot",
  MIN_WITHDRAW:30,
  MIN_RECHARGE:20,
- MAX_RECHARGE:5000
+ ADMIN_NUMBERS:{
+  bKash:"01711111111",
+  Nagad:"01822222222",
+  Rocket:"01933333333",
+  Upay:"01644444444"
+ }
 };
 
-/* Brand image URLs.
-   If any external logo fails, local SVG fallback is used. */
 const LOGOS={
  bkash:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/bkash.png",
  nagad:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/nagad.png",
  rocket:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/rocket.png",
+ upay:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/upay.png",
+ skitto:"https://cdn.simpleicons.org/speedtest/FF6600",
+ proxy:"https://cdn.simpleicons.org/cloudflare/F38020",
+ vpn:"https://cdn.simpleicons.org/letsencrypt/003A70",
+ deposit:"https://cdn.simpleicons.org/cashapp/00D632",
  facebook:"https://cdn.simpleicons.org/facebook/0866FF",
  telegram:"https://cdn.simpleicons.org/telegram/229ED9",
  tiktok:"https://cdn.simpleicons.org/tiktok/111111",
@@ -378,47 +411,26 @@ const LOGOS={
 };
 
 const COLORS={
- bkash:"#D91B72",nagad:"#E32636",rocket:"#7B3FA0",
- gp:"#079447",robi:"#E52A32",banglalink:"#F39A18",
- airtel:"#E52A32",teletalk:"#15966A",facebook:"#1877F2",
- telegram:"#229ED9",tiktok:"#111111",instagram:"#D94B86",
- youtube:"#F00000",website:"#2864D7",home:"#2864D7",
- task:"#7655D9",wallet:"#2864D7",refer:"#16A36A",
- ads:"#E19B2C",gift:"#D58C28",history:"#5976B9",
- profile:"#53698F",support:"#229ED9",group:"#229ED9",
- phone:"#2864D7",upload:"#2864D7"
+ bkash:"#D91B72",nagad:"#E32636",rocket:"#7B3FA0",upay:"#F7941D",
+ skitto:"#FF6600",proxy:"#F38020",vpn:"#003A70",deposit:"#00D632",
+ gp:"#079447",robi:"#E52A32",banglalink:"#F39A18",airtel:"#E52A32",teletalk:"#15966A"
 };
 const LETTERS={
- bkash:"bK",nagad:"N",rocket:"R",gp:"GP",robi:"robi",
- banglalink:"BL",airtel:"A",teletalk:"T",facebook:"f",
- telegram:"➤",tiktok:"♪",instagram:"◎",youtube:"▶",
- website:"W",home:"⌂",task:"✓",wallet:"৳",refer:"↗",
- ads:"▶",gift:"G",history:"↺",profile:"U",support:"?",
- group:"●",phone:"SIM",upload:"↑"
+ bkash:"bK",nagad:"N",rocket:"R",upay:"U",skitto:"SK",proxy:"IP",vpn:"VPN",deposit:"৳"
 };
 function fallbackIcon(key){
  const c=COLORS[key]||"#2864D7";
  const l=LETTERS[key]||"•";
- const round=["bkash","nagad","rocket","gp","robi","banglalink","airtel","teletalk","facebook","telegram","tiktok","instagram","youtube"].includes(key);
- const svg=round
-  ? `<circle cx="40" cy="40" r="35" fill="${c}"/><text x="40" y="49" text-anchor="middle" font-size="${l.length>2?17:28}" font-family="Arial" font-weight="bold" fill="white">${l}</text>`
-  : `<rect x="5" y="5" width="70" height="70" rx="21" fill="${c}" opacity=".14"/><text x="40" y="53" text-anchor="middle" font-size="43" font-family="Arial" font-weight="bold" fill="${c}">${l}</text>`;
- return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(
-  `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">${svg}</svg>`
- );
+ const svg=`<circle cx="40" cy="40" r="35" fill="${c}"/><text x="40" y="49" text-anchor="middle" font-size="24" font-family="Arial" font-weight="bold" fill="white">${l}</text>`;
+ return "data:image/svg+xml;charset=UTF-8,"+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 80 80">${svg}</svg>`);
 }
-function imageFor(key){
- return LOGOS[key]||fallbackIcon(key);
-}
+function imageFor(key){return LOGOS[key]||fallbackIcon(key);}
 function setImage(img,key){
  img.onerror=()=>{img.onerror=null;img.src=fallbackIcon(key)};
  img.src=imageFor(key);
 }
-document.querySelectorAll("[data-icon]").forEach(img=>{
- setImage(img,img.dataset.icon);
-});
+document.querySelectorAll("[data-icon]").forEach(img=>setImage(img,img.dataset.icon));
 
-/* Telegram user identity */
 const tg=window.Telegram?.WebApp;
 tg?.ready();
 tg?.expand();
@@ -428,29 +440,18 @@ const userName=[tgUser.first_name,tgUser.last_name].filter(Boolean).join(" ")||"
 const username=tgUser.username?"@"+tgUser.username:"Not available";
 
 document.getElementById("headerName").textContent=userName;
-document.getElementById("headerId").textContent=userId?"ID: "+userId:"Telegram not connected";
+document.getElementById("headerId").textContent=userId?"ID: "+userId:"Telegram connected";
 document.getElementById("profileName").textContent=userName;
 document.getElementById("profileUsername").textContent=username;
-document.getElementById("telegramName").textContent=userName;
-document.getElementById("telegramUsername").textContent=username;
 document.getElementById("telegramUserId").textContent=userId||"Not available";
 
 const photo=document.getElementById("profilePhoto");
-if(tgUser.photo_url){
- photo.onerror=()=>{photo.onerror=null;photo.src=fallbackIcon("profile")};
- photo.src=tgUser.photo_url;
-}else{
- photo.src=fallbackIcon("profile");
-}
+if(tgUser.photo_url){photo.onerror=()=>photo.src=fallbackIcon("profile");photo.src=tgUser.photo_url;}
+else{photo.src=fallbackIcon("profile");}
 
-/* Telegram chat ID must come from the backend */
-document.getElementById("telegramChatId").textContent=
- "Bot connection required";
-
-/* Demo state */
-const storeKey="refex_user_"+(userId||"demo");
+const storeKey="refex_pro_user_"+(userId||"demo");
 let state={
- balance:0,totalEarn:0,tasks:0,referrals:0,
+ balance:0,depositBalance:0,totalEarn:0,tasks:0,referrals:0,
  completedReferrals:0,history:[]
 };
 try{
@@ -463,371 +464,252 @@ function saveDemo(){
  render();
 }
 function money(v){return Number(v||0).toFixed(2)}
-function esc(v){
- return String(v??"").replace(/[&<>"']/g,c=>({
-  "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
- }[c]));
-}
 function toast(message){
  const el=document.getElementById("toast");
  el.textContent=message;
  el.style.display="block";
- setTimeout(()=>el.style.display="none",2800);
+ setTimeout(()=>el.style.display="none",3000);
 }
 
-/* Backend helper */
-function apiHeaders(){
- return {"X-Telegram-Init-Data":tg?.initData||""};
-}
-async function apiGet(path){
- if(!CONFIG.API_BASE_URL)return null;
- const r=await fetch(CONFIG.API_BASE_URL+path,{headers:apiHeaders()});
- if(!r.ok)throw new Error("Server request failed");
- return r.json();
-}
-async function apiPost(path,body){
- if(!CONFIG.API_BASE_URL)return null;
- const r=await fetch(CONFIG.API_BASE_URL+path,{
-  method:"POST",
-  headers:{...apiHeaders(),"Content-Type":"application/json"},
-  body:JSON.stringify(body)
- });
- const data=await r.json().catch(()=>({}));
- if(!r.ok)throw new Error(data.message||"Request failed");
- return data;
-}
-
-/* Navigation */
 function go(id,button){
  document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
  document.getElementById(id)?.classList.add("active");
  document.querySelectorAll(".bottom-nav button").forEach(b=>b.classList.remove("active"));
  if(button)button.classList.add("active");
  else{
-  const index={home:0,categories:1,tasklist:1,taskdetail:1,
-   withdraw:2,recharge:2,refer:3,profile:4}[id];
+  const index={home:0,proxy:1,deposit:2,refer:3,profile:4}[id];
   if(index!==undefined)document.querySelectorAll(".bottom-nav button")[index].classList.add("active");
  }
  window.scrollTo(0,0);
 }
 
-/* Default display data.
-   Production task data comes from Admin Panel API. */
+const proxyData={
+ us:[{name:"USA 500MB Proxy",mb:"500 MB",price:40},{name:"USA 1GB Proxy",mb:"1 GB",price:75}],
+ uk:[{name:"UK Residential 500MB",mb:"500 MB",price:50},{name:"UK Residential 1GB",mb:"1 GB",price:90}],
+ bd:[{name:"BD Mobile IP 1GB",mb:"1 GB",price:60},{name:"BD Mobile IP 2GB",mb:"2 GB",price:110}]
+};
+
+function updateProxyPackages(){
+ const cat=document.getElementById("proxyCategory").value;
+ const list=proxyData[cat]||[];
+ document.getElementById("proxyPackageList").innerHTML=list.map((p,i)=>`
+  <div class="task-row">
+   <img data-icon="proxy" src="${imageFor('proxy')}">
+   <div class="task-info"><b>${p.name}</b><small>Price: ৳${p.price}</small></div>
+   <button class="view-btn" onclick="buyProxy('${p.name}', ${p.price})">Buy Now</button>
+  </div>
+ `).join("");
+}
+updateProxyPackages();
+
+function buyProxy(name, price){
+ const walletType=prompt("কোন ব্যালেন্স থেকে কাটবে?\n১ লিখুন = Deposit Balance\n২ লিখুন = Income/Task Balance", "1");
+ if(walletType!=="1" && walletType!=="2")return toast("বাতিল করা হয়েছে");
+
+ let payFromDeposit = (walletType==="1");
+ if(payFromDeposit){
+  if(state.depositBalance < price)return toast("আপনার ডিপোজিট ব্যালেন্সে পর্যাপ্ত টাকা নেই!");
+  state.depositBalance -= price;
+ } else {
+  if(state.balance < price)return toast("আপনার ইনকাম ব্যালেন্সে পর্যাপ্ত টাকা নেই!");
+  state.balance -= price;
+ }
+
+ const ipDetails="IP: 192.168."+Math.floor(Math.random()*255)+":"+Math.floor(Math.random()*8999+1000)+" | User: usr_"+userId+" | Pass: sec***";
+ state.history.unshift({type:"Buy Proxy",details:name+" • "+ipDetails,amount:price,status:"Success (Auto)",date:new Date().toLocaleString()});
+ saveDemo();
+ alert("সফলভাবে প্রক্সি কেনা হয়েছে!\n\nআপনার প্রক্সি ডিটেইলস:\n"+ipDetails);
+ go('history');
+}
+
+let selectedVpn={name:"",price:0};
+function selectVpn(name, price, el){
+ selectedVpn={name,price};
+ document.getElementById("selectedVpnName").value=name+" (৳"+price+")";
+ document.querySelectorAll("#vpn .brand").forEach(b=>b.classList.remove("selected"));
+ el.classList.add("selected");
+}
+function buyVpnConfirm(){
+ if(!selectedVpn.name)return toast("দয়া করে একটি ভিপিএন সিলেক্ট করুন");
+ const wallet=document.getElementById("vpnPayWallet").value;
+ const price=selectedVpn.price;
+
+ if(wallet==="deposit"){
+  if(state.depositBalance < price)return toast("ডিপোজিট ব্যালেন্সে পর্যাপ্ত টাকা নেই!");
+  state.depositBalance -= price;
+ }else{
+  if(state.balance < price)return toast("ইনকাম ব্যালেন্সে পর্যাপ্ত টাকা নেই!");
+  state.balance -= price;
+ }
+
+ const email="vpn_user_"+Math.floor(Math.random()*89999+10000)+"@vpngate.net";
+ const pass="Pass"+Math.floor(Math.random()*899999+100000);
+ 
+ document.getElementById("vpnDeliveryBox").style.display="block";
+ document.getElementById("vpnCredentials").innerHTML=`
+  <b>Package:</b> ${selectedVpn.name} (7 Days)<br>
+  <b>Email / Username:</b> ${email}<br>
+  <b>Password:</b> ${pass}<br>
+  <span style="color:var(--green)">Status: Active & Delivered Automatically</span>
+ `;
+
+ state.history.unshift({type:"Buy VPN",details:selectedVpn.name+" (7 Days)",amount:price,status:"Success (Auto)",date:new Date().toLocaleString()});
+ saveDemo();
+ toast("ভিপিএন সফলভাবে কেনা হয়েছে!");
+}
+
+let selectedDeposit="";
+function chooseDepositMethod(method, el){
+ selectedDeposit=method;
+ document.getElementById("depositMethod").value=method;
+ document.getElementById("adminAgentNumber").textContent=CONFIG.ADMIN_NUMBERS[method]||"01700000000";
+ document.getElementById("gatewayNameText").textContent=method;
+ document.getElementById("depositInstruction").style.display="block";
+ document.querySelectorAll("#deposit .brand").forEach(b=>b.classList.remove("selected"));
+ el.classList.add("selected");
+}
+function submitDeposit(){
+ const amount=Number(document.getElementById("depositAmount").value);
+ const sender=document.getElementById("senderNumber").value.trim();
+ const trx=document.getElementById("trxId").value.trim();
+
+ if(!selectedDeposit)return toast("পেমেন্ট মেথড সিলেক্ট করুন");
+ if(!amount || amount<50)return toast("সর্বনিম্ন ডিপোজিট ৫০ টাকা");
+ if(!/^01[0-9]{9}$/.test(sender))return toast("আপনার সঠিক সেন্ডার মোবাইল নম্বর দিন");
+ if(!trx || trx.length<5)return toast("সঠিক TrxID প্রদান করুন");
+
+ state.history.unshift({type:"Deposit Request",details:selectedDeposit+" • Trx: "+trx+" • From: "+sender,amount:amount,status:"Pending",date:new Date().toLocaleString()});
+ saveDemo();
+ toast("ডিপোজিট রিকোয়েস্ট সফলভাবে জমা হয়েছে! অ্যাডমিন চেক করে ব্যালেন্স যোগ করবেন।");
+ go('history');
+}
+
+const directRefLink="https://t.me/"+CONFIG.BOT_USERNAME+"?startapp=ref_"+(userId||"USER");
+document.getElementById("refLink").value=directRefLink;
+function copyReferral(){
+ navigator.clipboard.writeText(directRefLink);
+ toast("ডাইরেক্ট মিনি অ্যাপ রেফার লিঙ্ক কপি হয়েছে!");
+}
+function shareReferral(){
+ if(navigator.share)navigator.share({title:"Refe X Earn",url:directRefLink});
+ else copyReferral();
+}
+
 let categories=[
  {id:"telegram",name:"Telegram Tasks",icon:"telegram",tasks:[
-  {id:"tg1",title:"Join Telegram Channel",reward:2,link:"https://t.me/",rules:"Admin-এর দেওয়া Telegram Channel-এ Join করতে হবে। Join করার পর Screenshot দিতে হবে।",steps:["Task Link খুলুন।","Telegram Channel-এ Join করুন।","Join অবস্থার Screenshot নিন।","Screenshot Upload করে Submit করুন।"]},
-  {id:"tg2",title:"Join Telegram Group",reward:2,link:"https://t.me/",rules:"নির্দেশিত Telegram Group-এ Join করে Screenshot জমা দিন।",steps:["Group Link খুলুন।","Group-এ Join করুন।","Group Membership-এর Screenshot নিন।","Screenshot Upload করুন।"]}
+  {id:"tg1",title:"Join Channel",reward:5,link:"https://t.me/",rules:"চ্যানেলে জয়েন করে স্ক্রিনশট দিন।",steps:["লিংকে যান","জয়েন করুন","স্ক্রিনশট দিন"]}
  ]},
- {id:"website",name:"Website Visit",icon:"website",tasks:[
-  {id:"web1",title:"Visit Website",reward:1,link:"https://example.com",rules:"Admin-এর দেওয়া Website ভিজিট করুন এবং নির্দেশনা অনুযায়ী Screenshot জমা দিন।",steps:["Website Link খুলুন।","নির্দেশিত পেজ দেখুন।","Screenshot নিন।","Submit করুন।"]}
- ]},
- {id:"tiktok",name:"TikTok Tasks",icon:"tiktok",tasks:[
-  {id:"tt1",title:"TikTok Follow",reward:2,link:"https://www.tiktok.com/",rules:"Admin-এর নির্দেশিত TikTok Profile Follow করুন। Screenshot জমা দিন।",steps:["TikTok Link খুলুন।","নির্দেশিত কাজ করুন।","Screenshot নিন।","Upload করুন।"]}
- ]},
- {id:"facebook",name:"Facebook Tasks",icon:"facebook",tasks:[
-  {id:"fb1",title:"Facebook Follow",reward:2,link:"https://www.facebook.com/",rules:"Admin-এর নির্দেশিত Facebook Page Follow করুন এবং Screenshot দিন।",steps:["Facebook Page খুলুন।","নির্দেশিত কাজ করুন।","Screenshot নিন।","Submit করুন।"]}
- ]},
- {id:"instagram",name:"Instagram Tasks",icon:"instagram",tasks:[
-  {id:"ig1",title:"Instagram Follow",reward:2,link:"https://www.instagram.com/",rules:"Admin-এর নির্দেশিত Instagram Profile Follow করুন। Screenshot দিতে হবে।",steps:["Profile Link খুলুন।","Follow করুন।","Screenshot নিন।","Submit করুন।"]}
- ]},
- {id:"youtube",name:"YouTube Tasks",icon:"youtube",tasks:[
-  {id:"yt1",title:"YouTube Subscribe",reward:2,link:"https://www.youtube.com/",rules:"Admin-এর নির্দেশিত YouTube Channel Subscribe করুন। Screenshot জমা দিন।",steps:["YouTube Link খুলুন।","Subscribe করুন।","Screenshot নিন।","Submit করুন।"]}
- ]},
- {id:"app",name:"App Install",icon:"phone",tasks:[
-  {id:"app1",title:"Install Application",reward:3,link:"https://play.google.com/store",rules:"Admin-এর দেওয়া App Install করে Screenshot জমা দিন।",steps:["App Link খুলুন।","App Install করুন।","প্রয়োজনীয় Screenshot নিন।","Upload করুন।"]}
+ {id:"website",name:"Website Visit",icon:"proxy",tasks:[
+  {id:"web1",title:"Visit Website 1 Min",reward:3,link:"https://example.com",rules:"ওয়েবসাইট ভিজিট করুন।",steps:["লিংক ওপেন করুন","১ মিনিট থাকুন"]}
  ]}
 ];
-
-let currentCategory=null;
-let currentTask=null;
-let selectedScreenshot=null;
-let screenshotData=null;
+let currentCategory=null, currentTask=null, selectedScreenshot=null;
 
 function renderCategories(){
  document.getElementById("categoryList").innerHTML=categories.map(c=>`
   <div class="task-row">
-   <img src="${imageFor(c.icon)}" alt="${esc(c.name)}">
-   <div class="task-info"><b>${esc(c.name)}</b><small>${c.tasks.length} task(s)</small></div>
-   <button class="view-btn" onclick="viewCategory('${esc(c.id)}')">View</button>
-  </div>`).join("");
+   <img data-icon="${c.icon}" src="${imageFor(c.icon)}">
+   <div class="task-info"><b>${c.name}</b><small>${c.tasks.length} task(s)</small></div>
+   <button class="view-btn" onclick="viewCategory('${c.id}')">View</button>
+  </div>
+ `).join("");
 }
 function viewCategory(id){
  currentCategory=categories.find(c=>c.id===id);
  if(!currentCategory)return;
  document.getElementById("taskCategoryTitle").textContent=currentCategory.name;
- document.getElementById("categoryTasks").innerHTML=currentCategory.tasks.length?
- currentCategory.tasks.map(t=>`
+ document.getElementById("categoryTasks").innerHTML=currentCategory.tasks.map(t=>`
   <div class="task-row">
-   <img src="${imageFor(currentCategory.icon)}" alt="">
-   <div class="task-info"><b>${esc(t.title)}</b><small>Reward: ৳${money(t.reward)}</small></div>
-   <button class="view-btn" onclick="viewTask('${esc(t.id)}')">View</button>
-  </div>`).join(""):'<div class="empty">এই ক্যাটাগরিতে কোনো কাজ নেই।</div>';
+   <img data-icon="task" src="${imageFor('task')}">
+   <div class="task-info"><b>${t.title}</b><small>Reward: ৳${t.reward}</small></div>
+   <button class="view-btn" onclick="viewTask('${t.id}')">View</button>
+  </div>
+ `).join("");
  go("tasklist");
 }
 function viewTask(id){
- currentTask=currentCategory?.tasks.find(t=>t.id===id);
- if(!currentTask)return;
- setImage(document.getElementById("detailIcon"),currentCategory.icon);
+ currentTask=currentCategory.tasks.find(t=>t.id===id);
  document.getElementById("detailTitle").textContent=currentTask.title;
- document.getElementById("detailReward").textContent="Reward ৳"+money(currentTask.reward);
- document.getElementById("detailLink").value=currentTask.link||"";
- document.getElementById("detailRules").innerHTML=
-  `<div class="step">${esc(currentTask.rules||"No additional rules.")}</div>`;
- document.getElementById("detailSteps").innerHTML=
-  (currentTask.steps||[]).map((s,i)=>
-   `<div class="step"><b>Step ${i+1}</b><br>${esc(s)}</div>`).join("");
- document.getElementById("taskProof").value="";
- document.getElementById("taskScreenshot").value="";
- document.getElementById("screenshotPreview").style.display="none";
- selectedScreenshot=null;
- screenshotData=null;
+ document.getElementById("detailReward").textContent="Reward ৳"+currentTask.reward;
+ document.getElementById("detailLink").value=currentTask.link;
+ document.getElementById("detailRules").innerHTML=`<div class="step">${currentTask.rules}</div>`;
+ document.getElementById("detailSteps").innerHTML=currentTask.steps.map((s,i)=>`<div class="step"><b>Step ${i+1}:</b> ${s}</div>`).join("");
  go("taskdetail");
 }
-function openTaskLink(){
- if(currentTask?.link)window.open(currentTask.link,"_blank");
+function openTaskLink(){if(currentTask?.link)window.open(currentTask.link,"_blank");}
+function previewScreenshot(e){
+ selectedScreenshot=e.target.files[0];
+ if(selectedScreenshot){
+  const r=new FileReader();
+  r.onload=ev=>{document.getElementById("screenshotPreview").src=ev.target.result;document.getElementById("screenshotPreview").style.display="block";};
+  r.readAsDataURL(selectedScreenshot);
+ }
 }
-
-/* Screenshot selection and preview */
-function previewScreenshot(event){
- const file=event.target.files?.[0];
- if(!file)return;
- if(!["image/jpeg","image/png","image/webp"].includes(file.type)){
-  event.target.value="";
-  return toast("শুধু JPG, PNG অথবা WEBP ছবি দিন");
- }
- if(file.size>5*1024*1024){
-  event.target.value="";
-  return toast("Screenshot সর্বোচ্চ ৫ MB হতে পারবে");
- }
- selectedScreenshot=file;
- const reader=new FileReader();
- reader.onload=()=>{
-  screenshotData=reader.result;
-  const preview=document.getElementById("screenshotPreview");
-  preview.src=screenshotData;
-  preview.style.display="block";
- };
- reader.readAsDataURL(file);
-}
-
-/* Submit task with screenshot */
-async function submitTask(){
- if(!currentTask)return;
- if(!selectedScreenshot)return toast("Task Screenshot Upload করুন");
-
- const proof=document.getElementById("taskProof").value.trim();
-
- if(CONFIG.API_BASE_URL){
-  try{
-   const form=new FormData();
-   form.append("screenshot",selectedScreenshot);
-   form.append("proof",proof);
-   form.append("taskId",currentTask.id);
-
-   const response=await fetch(
-    CONFIG.API_BASE_URL+"/api/tasks/"+encodeURIComponent(currentTask.id)+"/submit",
-    {method:"POST",headers:apiHeaders(),body:form}
-   );
-   const result=await response.json().catch(()=>({}));
-   if(!response.ok)throw new Error(result.message||"Upload failed");
-   toast("Screenshot ও Task Admin-এর কাছে জমা হয়েছে");
-   await loadDashboard();
-   go("history");
-  }catch(e){
-   toast(e.message||"Task জমা দেওয়া যায়নি");
-  }
-  return;
- }
-
- /* Demo mode: no real server upload */
- state.history.unshift({
-  type:"Task Submission",
-  details:currentTask.title+" • Screenshot selected",
-  amount:currentTask.reward,
-  status:"Demo - Not Sent",
-  date:new Date().toLocaleString()
- });
+function submitTask(){
+ if(!selectedScreenshot)return toast("স্ক্রিনশট আপলোড করুন!");
+ state.tasks+=1;
+ state.balance+=currentTask.reward;
+ state.totalEarn+=currentTask.reward;
+ state.history.unshift({type:"Task Earning",details:currentTask.title,amount:currentTask.reward,status:"Success",date:new Date().toLocaleString()});
  saveDemo();
- toast("Screenshot Preview হয়েছে। আসল Admin-এ পাঠাতে Backend সংযোগ করুন।");
+ toast("টাস্ক সফল! ব্যালেন্সে টাকা যোগ হয়েছে।");
  go("history");
 }
 
-/* Withdraw */
 let selectedWithdraw="";
-function chooseWithdraw(method,el){
- selectedWithdraw=method;
- document.getElementById("withdrawMethod").value=method;
- document.querySelectorAll("#withdraw .brand").forEach(b=>b.classList.remove("selected"));
- el.classList.add("selected");
-}
-async function requestWithdraw(){
- const number=document.getElementById("withdrawNumber").value.trim();
- const amount=Number(document.getElementById("withdrawAmount").value);
- if(!selectedWithdraw)return toast("Payment Method নির্বাচন করুন");
- if(!/^01[0-9]{9}$/.test(number))return toast("সঠিক ১১ ডিজিটের নম্বর দিন");
- if(!Number.isFinite(amount)||amount<CONFIG.MIN_WITHDRAW)return toast("Minimum Withdrawal ৳30");
- if(!confirm(selectedWithdraw+"-এ ৳"+amount+" Withdrawal Request করবেন?"))return;
+function chooseWithdraw(m,el){selectedWithdraw=m;document.getElementById("withdrawMethod").value=m;document.querySelectorAll("#withdraw .brand").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");}
+function requestWithdraw(){
+ const num=document.getElementById("withdrawNumber").value.trim();
+ const amt=Number(document.getElementById("withdrawAmount").value);
+ if(!selectedWithdraw)return toast("মেথড সিলেক্ট করুন");
+ if(!/^01[0-9]{9}$/.test(num))return toast("সঠিক নম্বর দিন");
+ if(state.balance < CONFIG.MIN_WITHDRAW)return toast("আপনার পর্যাপ্ত ইনকাম ব্যালেন্স নেই। কাজ করে ইনকাম করুন।");
+ if(amt < CONFIG.MIN_WITHDRAW || amt > state.balance)return toast("টাকার পরিমাণ সঠিক নয়!");
 
- if(CONFIG.API_BASE_URL){
-  try{
-   await apiPost("/api/withdrawals",{method:selectedWithdraw,number,amount});
-   toast("Withdrawal Request জমা হয়েছে");
-   await loadDashboard();
-  }catch(e){toast(e.message)}
- }else{
-  state.history.unshift({type:"Withdrawal",details:selectedWithdraw+" • "+number,amount,status:"Demo - Not Sent",date:new Date().toLocaleString()});
-  saveDemo();
-  toast("Demo Request তৈরি হয়েছে। Backend সংযোগ প্রয়োজন।");
- }
- document.getElementById("withdrawNumber").value="";
- document.getElementById("withdrawAmount").value="";
+ state.balance -= amt;
+ state.history.unshift({type:"Withdrawal",details:selectedWithdraw+" • "+num,amount:amt,status:"Pending",date:new Date().toLocaleString()});
+ saveDemo();
+ toast("উত্তোলন রিকোয়েস্ট জমা হয়েছে!");
 }
 
-/* Mobile recharge */
 let selectedOperator="";
-function chooseOperator(operator,el){
- selectedOperator=operator;
- document.getElementById("operator").value=operator;
- document.querySelectorAll("#recharge .brand").forEach(b=>b.classList.remove("selected"));
- el.classList.add("selected");
-}
-async function requestRecharge(){
- const number=document.getElementById("rechargeNumber").value.trim();
- const amount=Number(document.getElementById("rechargeAmount").value);
- if(!selectedOperator)return toast("Operator নির্বাচন করুন");
- if(!/^01[0-9]{9}$/.test(number))return toast("সঠিক মোবাইল নম্বর দিন");
- if(!Number.isFinite(amount)||amount<CONFIG.MIN_RECHARGE||amount>CONFIG.MAX_RECHARGE)
-  return toast("Recharge ৳20 থেকে ৳5000 হতে হবে");
- if(!confirm(selectedOperator+" নম্বরে ৳"+amount+" Recharge Request করবেন?"))return;
+function chooseOperator(op,el){selectedOperator=op;document.getElementById("operator").value=op;document.querySelectorAll("#recharge .brand").forEach(b=>b.classList.remove("selected"));el.classList.add("selected");}
+function requestRecharge(){
+ const num=document.getElementById("rechargeNumber").value.trim();
+ const amt=Number(document.getElementById("rechargeAmount").value);
+ if(!selectedOperator)return toast("অপারেটর সিলেক্ট করুন");
+ if(!/^01[0-9]{9}$/.test(num))return toast("নম্বর সঠিক নয়");
+ if(amt < 20 || amt > state.balance)return toast("পর্যাপ্ত ব্যালেন্স বা সর্বনিম্ন ২০ টাকা রিচার্জ দিন।");
 
- if(CONFIG.API_BASE_URL){
-  try{
-   await apiPost("/api/recharges",{operator:selectedOperator,number,amount});
-   toast("Recharge Request জমা হয়েছে");
-   await loadDashboard();
-  }catch(e){toast(e.message)}
- }else{
-  state.history.unshift({type:"Mobile Recharge",details:selectedOperator+" • "+number,amount,status:"Demo - Not Sent",date:new Date().toLocaleString()});
-  saveDemo();
-  toast("Demo Request তৈরি হয়েছে। Backend সংযোগ প্রয়োজন।");
- }
- document.getElementById("rechargeNumber").value="";
- document.getElementById("rechargeAmount").value="";
+ state.balance -= amt;
+ state.history.unshift({type:"Mobile Recharge",details:selectedOperator+" • "+num,amount:amt,status:"Pending",date:new Date().toLocaleString()});
+ saveDemo();
+ toast("মোবাইল রিচার্জ রিকোয়েস্ট সফল!");
 }
 
-/* Referral */
-const referralLink="https://t.me/"+CONFIG.BOT_USERNAME+"?start=ref_"+(userId||"USER");
-document.getElementById("refLink").value=referralLink;
-async function copyReferral(){
- try{await navigator.clipboard.writeText(referralLink);toast("Referral Link কপি হয়েছে")}
- catch(e){document.getElementById("refLink").select();toast("লিংক সিলেক্ট হয়েছে, Copy করুন")}
-}
-function shareReferral(){
- if(navigator.share)navigator.share({title:"Refe X Earn",url:referralLink});
- else copyReferral();
-}
-
-/* Gift Code */
-async function claimGift(){
- const code=document.getElementById("giftCode").value.trim();
- if(!code)return toast("Gift Code লিখুন");
- if(!CONFIG.API_BASE_URL)return toast("Gift Code যাচাইয়ের জন্য Backend সংযোগ প্রয়োজন");
- try{
-  await apiPost("/api/gifts/claim",{code});
-  toast("Gift Code Claim Request জমা হয়েছে");
-  await loadDashboard();
- }catch(e){toast(e.message)}
-}
-
-/* Ads */
-function startAd(){
- if(!CONFIG.API_BASE_URL){
-  toast("Ads Provider সংযোগ করা হয়নি");
-  return;
- }
- apiGet("/api/ads/start").then(data=>{
-  if(data?.url)window.open(data.url,"_blank");
-  else toast("এখন কোনো বিজ্ঞাপন পাওয়া যাচ্ছে না");
- }).catch(()=>toast("Advertisement চালু করা যায়নি"));
-}
-
-/* Profile support links */
-function setProfileLink(id,url){
- const el=document.getElementById(id);
- if(url){
-  el.href=url;
-  el.target="_blank";
- }else{
-  el.href="#";
-  el.onclick=e=>{e.preventDefault();toast("Admin Panel থেকে Link সেট করতে হবে")};
- }
-}
-
-/* Dashboard rendering */
 function render(){
  document.getElementById("balance").textContent=money(state.balance);
+ document.getElementById("depositBalance").textContent=money(state.depositBalance);
+ document.getElementById("profBalance").textContent="৳"+money(state.balance);
+ document.getElementById("profDepositBalance").textContent="৳"+money(state.depositBalance);
  document.getElementById("totalEarn").textContent="৳"+money(state.totalEarn);
- document.getElementById("taskCount").textContent=state.tasks||0;
- document.getElementById("refCount").textContent=state.referrals||0;
- document.getElementById("refTotal").textContent=state.referrals||0;
- document.getElementById("refCompleted").textContent=state.completedReferrals||0;
- document.getElementById("pendingCount").textContent=
-  state.history.filter(x=>x.status==="Pending").length;
+ document.getElementById("taskCount").textContent=state.tasks;
+ document.getElementById("refCount").textContent=state.referrals;
+ document.getElementById("refTotal").textContent=state.referrals;
+ document.getElementById("refCompleted").textContent=state.completedReferrals;
+ document.getElementById("pendingCount").textContent=state.history.filter(x=>x.status==="Pending").length;
+ 
  document.getElementById("historyList").innerHTML=state.history.length?
- state.history.map(x=>`
-  <div class="history-row">
-   <div><b>${esc(x.type)}</b><br><span class="muted">${esc(x.details)}</span><br><span class="muted">${esc(x.date)}</span></div>
-   <div style="text-align:right"><b>৳${money(x.amount)}</b><br><span class="pending">${esc(x.status)}</span></div>
-  </div>`).join(""):'<div class="empty">No transactions yet.</div>';
-}
-
-/* Load live user data, tasks, rules and support links */
-async function loadDashboard(){
- if(!CONFIG.API_BASE_URL)return;
- try{
-  const data=await apiGet("/api/user/bootstrap");
-  if(!data)return;
-
-  if(data.profile){
-   const p=data.profile;
-   if(p.name)document.getElementById("profileName").textContent=p.name;
-   if(p.username){
-    document.getElementById("profileUsername").textContent="@"+p.username;
-    document.getElementById("telegramUsername").textContent="@"+p.username;
-   }
-   if(p.chat_id){
-    document.getElementById("telegramChatId").textContent=p.chat_id;
-   }
-   if(p.photo_url){
-    document.getElementById("profilePhoto").src=p.photo_url;
-   }
-  }
-  if(data.wallet)state.balance=Number(data.wallet.balance||0);
-  if(data.stats){
-   state.totalEarn=Number(data.stats.totalEarn||0);
-   state.tasks=Number(data.stats.tasks||0);
-   state.referrals=Number(data.stats.referrals||0);
-   state.completedReferrals=Number(data.stats.completedReferrals||0);
-  }
-  if(Array.isArray(data.taskCategories)){
-   categories=data.taskCategories;
-  }
-  if(data.links){
-   setProfileLink("supportChannel",data.links.supportChannel);
-   setProfileLink("communityGroup",data.links.communityGroup);
-   setProfileLink("supportChat",data.links.supportChat);
-  }
-  if(Array.isArray(data.history))state.history=data.history;
-  renderCategories();
-  render();
- }catch(e){
-  console.error("Dashboard load error",e);
- }
+  state.history.map(x=>`
+   <div class="history-row">
+    <div><b>${x.type}</b><br><span class="muted">${x.details}</span><br><span class="muted">${x.date}</span></div>
+    <div style="text-align:right"><b>৳${money(x.amount)}</b><br><span class="pending">${x.status}</span></div>
+   </div>
+  `).join(""):'<div class="empty">No transactions yet.</div>';
 }
 
 renderCategories();
 render();
-loadDashboard();
 </script>
 </body>
 </html>
