@@ -3,6 +3,551 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Trx Shop BD - IP & VPN Store</title>
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+<script type="module">
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+  import { getFirestore, doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, where } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+  const firebaseConfig = {
+    apiKey: "AIzaSyACn0hj0s7m8U5SAuh2EAPYMhQN-J6IVRM",
+    authDomain: "mvs-task-bot.firebaseapp.com",
+    databaseURL: "https://mvs-task-bot-default-rtdb.firebaseio.com",
+    projectId: "mvs-task-bot",
+    storageBucket: "mvs-task-bot.firebasestorage.app",
+    messagingSenderId: "1033413682590",
+    appId: "1:1033413682590:web:51bf2983daf98ed99b228f",
+    measurementId: "G-LF17GJCNXJ"
+  };
+
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
+  window.db = db;
+  window.dbModules = { doc, getDoc, setDoc, updateDoc, collection, addDoc, getDocs, query, where };
+</script>
+
+<style>
+:root{
+ --blue:#2864d7;--purple:#7855d9;--gold:#d8a33d;
+ --ink:#202943;--muted:#78839a;--line:#e8edf5;
+ --bg:#f5f7fc;--green:#159d68;--orange:#ff6600;--red:#e32636;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,sans-serif}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+.app{max-width:480px;min-height:100vh;margin:auto;background:#fff;padding-bottom:90px}
+header{display:flex;align-items:center;gap:11px;padding:14px;background:white;border-bottom:1px solid var(--line);position:sticky;top:0;z-index:5}
+.brand-logo{width:45px;height:45px;border-radius:15px;background:linear-gradient(135deg,#2458c7,#8464e9);display:grid;place-items:center;color:white;font-weight:900}
+.header-title{font-size:17px;font-weight:800}
+.header-sub{font-size:11px;color:var(--muted);margin-top:4px}
+.user-mini{margin-left:auto;text-align:right;font-size:12px}
+.user-mini small{color:var(--muted)}
+main{padding:15px}
+.page{display:none}
+.page.active{display:block}
+h2{font-size:19px;margin:7px 0 15px}
+h3{font-size:15px;margin:0 0 10px}
+p{line-height:1.55}
+.muted{font-size:12px;color:var(--muted);line-height:1.6}
+.hero{background:linear-gradient(125deg,#1d3f91,#386fe0 65%,#8062dc);padding:20px;border-radius:21px;color:#fff;position:relative;overflow:hidden}
+.wallet-box{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px;padding-top:12px;border-top:1px solid rgba(255,255,255,0.2)}
+.wallet-col b{font-size:17px}
+.section-head{display:flex;justify-content:space-between;align-items:center;margin:20px 0 11px}
+.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+.tile{border:1px solid var(--line);background:#fff;border-radius:16px;padding:14px 10px;text-align:center;color:var(--ink);min-height:110px;box-shadow:0 4px 15px #26395b0a;transition:0.2s}
+.tile:active{transform:scale(0.97)}
+.tile img{width:45px;height:45px;object-fit:contain;display:block;margin:0 auto 8px}
+.tile b{font-size:13px}
+.card{border:1px solid var(--line);border-radius:17px;padding:15px;margin:12px 0;background:#fff}
+.field{margin:13px 0}
+label{font-size:13px;font-weight:700;display:block;margin-bottom:7px}
+input,textarea,select{width:100%;border:1px solid #dfe5ef;border-radius:11px;padding:13px;background:white;color:var(--ink);outline:none}
+.primary{border:0;background:linear-gradient(100deg,var(--blue),var(--purple));color:white;padding:14px;border-radius:11px;width:100%;font-weight:700;margin-top:9px}
+.secondary{border:1px solid var(--line);background:#fff;padding:12px;border-radius:11px;width:100%;margin-top:9px;color:var(--ink);font-weight:600}
+.brand-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.brand{border:1px solid var(--line);border-radius:13px;background:#fff;padding:11px 5px;color:var(--ink);text-align:center}
+.brand img{width:38px;height:38px;object-fit:contain;display:block;margin:0 auto 7px}
+.brand b{font-size:11px}
+.brand.selected{border:2px solid var(--blue);background:#f5f8ff}
+.profile-link{display:flex;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:13px 0;color:var(--ink);text-decoration:none}
+.profile-link img{width:32px;height:32px;object-fit:contain}
+.profile-link div{flex:1}
+.profile-link b{font-size:13px}
+.profile-link small{display:block;color:var(--muted);margin-top:2px}
+.bottom-nav{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(480px,100%);display:grid;grid-template-columns:repeat(4,1fr);background:#fff;border-top:1px solid var(--line);padding:8px 3px calc(8px + env(safe-area-inset-bottom));z-index:10}
+.bottom-nav button{border:0;background:none;color:#8992a5;font-size:10px}
+.bottom-nav img{width:24px;height:24px;display:block;margin:0 auto 4px;object-fit:contain}
+.bottom-nav button.active{color:var(--blue);font-weight:bold}
+.toast{display:none;position:fixed;z-index:20;bottom:95px;left:50%;transform:translateX(-50%);background:#202943;color:white;padding:12px 17px;border-radius:12px;font-size:13px;max-width:90%;text-align:center}
+.badge-status{padding:3px 8px;border-radius:6px;font-size:11px;font-weight:bold}
+.status-success{background:#d4edda;color:#155724}
+.status-rejected{background:#f8d7da;color:#721c24}
+</style>
+</head>
+<body>
+<div class="app">
+
+<header>
+ <div class="brand-logo">TS</div>
+ <div>
+  <div class="header-title">Trx Shop BD</div>
+  <div class="header-sub">IP, VPN & Proxy Store</div>
+ </div>
+ <div class="user-mini">
+  <b id="headerName">User</b><br>
+  <small id="headerId">ID</small>
+ </div>
+</header>
+
+<main>
+
+<!-- HOME -->
+<section class="page active" id="home">
+ <div class="hero">
+  <small>My Wallets</small>
+  <div class="wallet-box">
+   <div class="wallet-col"><small>Income Balance</small><br><b>৳ <span id="balance">0.00</span></b></div>
+   <div class="wallet-col"><small>Deposit Balance</small><br><b>৳ <span id="depositBalance">0.00</span></b></div>
+  </div>
+  <button class="primary" style="background:#fff;color:#2864d7;margin-top:12px" onclick="go('deposit')">+ Deposit Money Now</button>
+ </div>
+
+ <div class="section-head"><h3>⚡ Premium Proxy & IP Store</h3></div>
+ <div class="grid" id="proxyGrid"></div>
+
+ <div class="section-head"><h3>🔐 VPN & Other Services</h3></div>
+ <div class="grid">
+  <button class="tile" onclick="go('vpn')"><img data-icon="vpn"><b>Buy VPN Account</b></button>
+  <button class="tile" onclick="go('refer')"><img data-icon="refer"><b>Refer & Earn (5%)</b></button>
+  <button class="tile" onclick="go('history')"><img data-icon="history"><b>My Purchases</b></button>
+  <button class="tile" onclick="go('profile')"><img data-icon="profile"><b>My Profile</b></button>
+ </div>
+</section>
+
+<!-- PROXY DETAILS -->
+<section class="page" id="proxyBuy">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2 id="proxyNameTitle">Proxy Store</h2>
+ <div class="card">
+  <div id="proxyRulesBox" class="muted" style="background:#f7f9ff;padding:10px;border-radius:8px;margin-bottom:12px"></div>
+  <div class="field"><label>Select Package</label><select id="proxyPackageOpt" onchange="updateProxyPrice()"></select></div>
+  <div class="field"><label>Pay Using Wallet</label>
+   <select id="proxyWallet"><option value="deposit">Deposit Balance</option><option value="income">Income Balance</option></select>
+  </div>
+  <button class="primary" onclick="executeBuyProxy()">Instant Buy & Auto Delivery</button>
+ </div>
+</section>
+
+<!-- VPN STORE -->
+<section class="page" id="vpn">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2>Buy Premium VPN</h2>
+ <div class="card">
+  <div class="brand-grid">
+   <button class="brand" onclick="selectVpn('Nord VPN', 150, this)"><img data-icon="vpn"><b>Nord VPN</b><br><small>৳150</small></button>
+   <button class="brand" onclick="selectVpn('Panda VPN', 120, this)"><img data-icon="vpn"><b>Panda VPN</b><br><small>৳120</small></button>
+   <button class="brand" onclick="selectVpn('Thunder VPN', 100, this)"><img data-icon="vpn"><b>Thunder VPN</b><br><small>৳100</small></button>
+   <button class="brand" onclick="selectVpn('Express VPN', 180, this)"><img data-icon="vpn"><b>Express VPN</b><br><small>৳180</small></button>
+   <button class="brand" onclick="selectVpn('Surfshark', 140, this)"><img data-icon="vpn"><b>Surfshark</b><br><small>৳140</small></button>
+   <button class="brand" onclick="selectVpn('IPVanish', 130, this)"><img data-icon="vpn"><b>IPVanish</b><br><small>৳130</small></button>
+  </div>
+  <div class="field" style="margin-top:12px"><label>Selected VPN</label><input id="vpnNameInput" readonly placeholder="Select above"></div>
+  <div class="field"><label>Wallet</label><select id="vpnWallet"><option value="deposit">Deposit Balance</option><option value="income">Income Balance</option></select></div>
+  <button class="primary" onclick="executeBuyVpn()">Buy VPN & Get Account</button>
+ </div>
+</section>
+
+<!-- DEPOSIT -->
+<section class="page" id="deposit">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2>Deposit Money</h2>
+ <div class="card">
+  <h3>Select Payment Gateway</h3>
+  <div class="brand-grid" id="depositMethodsGrid"></div>
+  <div class="field" style="margin-top:10px"><label>Method</label><input id="depMethod" readonly></div>
+  <div id="depInstruction" class="card" style="display:none;background:#fff8e6">
+   <b>Send Money to:</b> <span id="agentNumberShow" style="color:var(--blue);font-size:16px">01700000000</span>
+  </div>
+  <div class="field"><label>Amount (৳)</label><input id="depAmount" type="number" placeholder="Min ৳50"></div>
+  <div class="field"><label>Sender Mobile Number</label><input id="depSender" placeholder="01XXXXXXXXX"></div>
+  <div class="field"><label>Transaction ID (TrxID)</label><input id="depTrx" placeholder="TrxID"></div>
+  <button class="primary" onclick="submitDepositReq()">Submit Deposit Request</button>
+ </div>
+</section>
+
+<!-- REFER & EARN -->
+<section class="page" id="refer">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2>Refer & Earn (5% Commission)</h2>
+ <div class="card" style="text-align:center">
+  <img data-icon="refer" width="70">
+  <h3>Invite Friends & Earn 5%</h3>
+  <p class="muted">আপনার রেফারেল লিঙ্ক শেয়ার করুন। আপনার রেফারকৃত কেউ আইপি বা ভিপিএন কিনলে তার খরচের **৫% কমিশন** ইনস্ট্যান্ট আপনার ইনকাম ব্যালেন্সে যোগ হবে!</p>
+  <label>Your Mini-App Referral Link</label>
+  <input id="refLink" readonly>
+  <button class="primary" onclick="copyReferral()">Copy Referral Link</button>
+ </div>
+ <div class="stats" style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
+  <div class="card" style="margin:0;text-align:center"><small>Total Referrals</small><strong id="totalReferralsCount" style="font-size:20px;display:block">0</strong></div>
+  <div class="card" style="margin:0;text-align:center"><small>Referral Commission Earned</small><strong id="totalRefCommission" style="font-size:20px;display:block;color:var(--green)">৳0.00</strong></div>
+ </div>
+</section>
+
+<!-- HISTORY & FILE DOWNLOAD -->
+<section class="page" id="history">
+ <button class="back" onclick="go('home')">← Back</button>
+ <h2>My Purchases & Downloads</h2>
+ <div class="card" id="historyList"><div class="empty">No records found.</div></div>
+</section>
+
+<!-- PROFILE -->
+<section class="page" id="profile">
+ <h2>My Profile</h2>
+ <div class="card">
+  <div style="display:flex;align-items:center;gap:13px">
+   <img id="profImg" style="width:60px;height:60px;border-radius:50%;background:#eee">
+   <div><h3 id="profName">User</h3><div class="muted" id="profId">ID</div></div>
+  </div>
+ </div>
+ <div class="card">
+  <h3>Support & Channels</h3>
+  <a class="profile-link" href="https://t.me/trx_shop_bd_bot" target="_blank"><img data-icon="telegram"><div><b>Official Bot</b><small>@trx_shop_bd_bot</small></div><span>↗</span></a>
+ </div>
+</section>
+
+</main>
+
+<nav class="bottom-nav">
+ <button class="active" onclick="go('home',this)"><img data-icon="home">Home</button>
+ <button onclick="go('vpn',this)"><img data-icon="vpn">VPN</button>
+ <button onclick="go('deposit',this)"><img data-icon="deposit">Deposit</button>
+ <button onclick="go('history',this)"><img data-icon="history">History</button>
+ <button onclick="go('profile',this)"><img data-icon="profile">Profile</button>
+</nav>
+<div class="toast" id="toast"></div>
+</div>
+
+<script>
+const proxyNames = [
+ "Bunny Proxy", "Proxy Deal", "1024Proxy", "Helo Proxy", 
+ "Miyaip Proxy", "Mesh Proxy", "Safari Proxy", "KafKa Proxy", 
+ "Bulk Proxy", "BestProxy", "Abc Proxy", "9 Proxy", 
+ "Owl Proxy", "ThorData Proxy", "Loki Proxy", "Nov Proxy", 
+ "Cli Proxy", "DataImpulse", "Rapid Proxy", "711 Proxy", 
+ "Rocket Proxy", "IpRoket Proxy"
+];
+
+const LOGOS={
+ bkash:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/bkash.png",
+ nagad:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/nagad.png",
+ rocket:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/rocket.png",
+ upay:"https://raw.githubusercontent.com/mdmubarokhosin/Bd-MFS-Logo/refs/heads/main/logos/png/upay.png",
+ dbbl:"https://cdn.simpleicons.org/bankofamerica/003366",
+ proxy:"https://cdn.simpleicons.org/cloudflare/F38020",
+ vpn:"https://cdn.simpleicons.org/letsencrypt/003A70",
+ deposit:"https://cdn.simpleicons.org/cashapp/00D632",
+ history:"https://cdn.simpleicons.org/history/5976B9",
+ refer:"https://cdn.simpleicons.org/leaflet/199900",
+ telegram:"https://cdn.simpleicons.org/telegram/229ED9",
+ profile:"https://cdn.simpleicons.org/probot/000000"
+};
+
+function imageFor(k){return LOGOS[k]||LOGOS.proxy;}
+
+function renderProxies(){
+ document.getElementById("proxyGrid").innerHTML = proxyNames.map(name=>`
+  <button class="tile" onclick="openProxyBuy('${name}')">
+   <img src="${imageFor('proxy')}">
+   <b>${name}</b>
+  </button>
+ `).join("");
+}
+renderProxies();
+
+let tg=window.Telegram?.WebApp;
+tg?.ready(); tg?.expand();
+let userId=String(tg?.initDataUnsafe?.user?.id || "demo_user");
+let userName=tg?.initDataUnsafe?.user?.first_name || "User";
+
+// Check Referral in URL (e.g. ?startapp=ref_12345)
+const startParam = tg?.initDataUnsafe?.start_param || new URLSearchParams(window.location.search).get("startapp");
+if(startParam && startParam.startsWith("ref_")){
+ let referrerId = startParam.replace("ref_", "");
+ if(referrerId !== userId) localStorage.setItem("trx_referrer", referrerId);
+}
+
+document.getElementById("headerName").textContent=userName;
+document.getElementById("headerId").textContent="ID: "+userId;
+document.getElementById("profName").textContent=userName;
+document.getElementById("profId").textContent="ID: "+userId;
+
+const directRefLink = "https://t.me/trx_shop_bd_bot/app?startapp=ref_" + userId;
+document.getElementById("refLink").value = directRefLink;
+function copyReferral(){
+ navigator.clipboard.writeText(directRefLink);
+ alert("রেফারেল লিঙ্ক কপি হয়েছে!");
+}
+
+let state={balance:0, depositBalance:0, history:[], referralsCount:0, refCommissionEarned:0};
+let configSettings={
+ numbers:{bKash:"01711111111", Nagad:"01822222222", Rocket:"01933333333", Upay:"01644444444", DDBL:"01555555555"},
+ status:{bKash:true, Nagad:true, Rocket:true, Upay:true, DDBL:true},
+ proxyPrices:{}, proxyRules:{}, proxyStock:{_default:"IP: 192.168.1.10:8080 | User: usr | Pass: pass"}
+};
+
+let currentProxy="";
+async function loadAppData(){
+ if(!window.db) return;
+ const { doc, getDoc, setDoc } = window.dbModules;
+ 
+ const cfgSnap = await getDoc(doc(window.db, "admin", "config"));
+ if(cfgSnap.exists()) configSettings = cfgSnap.data();
+ renderDepositMethods();
+
+ const userRef = doc(window.db, "users", userId);
+ const userSnap = await getDoc(userRef);
+ if(userSnap.exists()){
+  state = userSnap.data();
+ } else {
+  state = {balance:0, depositBalance:0, history:[], referralsCount:0, refCommissionEarned:0};
+  // Check if referred
+  let refBy = localStorage.getItem("trx_referrer");
+  if(refBy){
+   state.referredBy = refBy;
+   // Update referrer stats
+   const refRef = doc(window.db, "users", refBy);
+   const refSnap = await getDoc(refRef);
+   if(refSnap.exists()){
+    let refData = refSnap.data();
+    await setDoc(refRef, { referralsCount: (refData.referralsCount || 0) + 1 }, {merge:true});
+   }
+  }
+  await setDoc(userRef, state);
+ }
+ updateUI();
+}
+
+function openProxyBuy(name){
+ currentProxy=name;
+ document.getElementById("proxyNameTitle").textContent=name+" Store";
+ 
+ // Check if disabled by admin
+ if(configSettings.proxyStatus && configSettings.proxyStatus[name] === false){
+  return alert("দুঃখিত, এই প্রক্সিটি বর্তমানে অফ রয়েছে!");
+ }
+
+ document.getElementById("proxyRulesBox").textContent = configSettings.proxyRules?.[name] || "অটো ডেলিভারি প্রক্সি প্যাকেজ। কেনার সাথে সাথে ফাইল ডাউনলোড করতে পারবেন।";
+ 
+ // Load packages/prices
+ let prices = configSettings.proxyPrices?.[name] || [{pkg:"500MB | 7 Days", price:40}, {pkg:"1GB | 30 Days", price:75}];
+ let html = prices.map(p=>`<option value="${p.pkg}|${p.price}">${p.pkg} - ৳${p.price}</option>`).join("");
+ document.getElementById("proxyPackageOpt").innerHTML = html;
+
+ go("proxyBuy");
+}
+
+function renderDepositMethods(){
+ const methods = ['bKash', 'Nagad', 'Rocket', 'Upay', 'DDBL'];
+ let html = "";
+ methods.forEach(m => {
+  if(configSettings.status[m] !== false){
+   html += `<button class="brand" onclick="selectDepMethod('${m}')"><img src="${imageFor(m.toLowerCase())}"><b>${m}</b></button>`;
+  }
+ });
+ document.getElementById("depositMethodsGrid").innerHTML = html || "<p class='muted'>কোনো পেমেন্ট গেটওয়ে চালু নেই।</p>";
+}
+
+let selDepMethod="";
+function selectDepMethod(m){
+ selDepMethod=m;
+ document.getElementById("depMethod").value=m;
+ document.getElementById("agentNumberShow").textContent = configSettings.numbers[m] || "01700000000";
+ document.getElementById("depInstruction").style.display="block";
+ document.querySelectorAll("#depositMethodsGrid .brand").forEach(b=>b.classList.remove("selected"));
+ event.currentTarget.classList.add("selected");
+}
+
+function updateUI(){
+ document.getElementById("balance").textContent=Number(state.balance).toFixed(2);
+ document.getElementById("depositBalance").textContent=Number(state.depositBalance).toFixed(2);
+ document.getElementById("totalReferralsCount").textContent=state.referralsCount || 0;
+ document.getElementById("totalRefCommission").textContent="৳"+Number(state.refCommissionEarned || 0).toFixed(2);
+ 
+ let html = "";
+ if(state.history && state.history.length > 0){
+  state.history.forEach((h, idx)=>{
+   html += `<div class="card">
+    <b>${h.type}</b> - ৳${h.amount}<br>
+    <small class="muted">${h.details}</small><br>
+    <div style="margin-top:6px;display:flex;justify-content:space-between;align-items:center">
+     <span class="badge-status status-success">${h.status}</span>
+     ${h.fileContent ? `<button class="secondary" style="width:auto;padding:5px 10px;margin:0" onclick="downloadFile('${encodeURIComponent(h.fileContent)}', '${h.type}')">📥 Download File</button>` : ''}
+    </div>
+   </div>`;
+  });
+ } else {
+  html = `<div class="empty">কোনো কেনাকাটার হিস্টরি নেই।</div>`;
+ }
+ document.getElementById("historyList").innerHTML = html;
+}
+
+function saveState(){
+ if(!window.db) return;
+ const { doc, setDoc } = window.dbModules;
+ setDoc(doc(window.db, "users", userId), state, {merge:true});
+ updateUI();
+}
+
+async function executeBuyProxy(){
+ const opt = document.getElementById("proxyPackageOpt").value.split("|");
+ const pkgName = opt[0], price = Number(opt[1]);
+ const wallet = document.getElementById("proxyWallet").value;
+
+ if(wallet === "deposit"){
+  if(state.depositBalance < price) return alert("ডিপোজিট ব্যালেন্সে পর্যাপ্ত টাকা নেই!");
+  state.depositBalance -= price;
+ } else {
+  if(state.balance < price) return alert("ইনকাম ব্যালেন্সে পর্যাপ্ত টাকা নেই!");
+  state.balance -= price;
+ }
+
+ // Get stock/file uploaded by admin
+ let stockText = configSettings.proxyStock?.[currentProxy] || configSettings.proxyStock?._default || "IP: 192.168.1.1:8080\nUser: admin\nPass: 12345";
+ const fileData = `=== PROXY DETAILS (${currentProxy}) ===\nPackage: ${pkgName}\n${stockText}\n================================`;
+
+ state.history.unshift({
+  type: currentProxy + " ("+pkgName+")",
+  details: `Auto Delivered • Paid via ${wallet}`,
+  amount: price,
+  status: "Approved",
+  fileContent: fileData,
+  time: new Date().toLocaleString()
+ });
+ saveState();
+
+ // Give 5% Referral Commission if referred
+ if(state.referredBy && window.db){
+  let comm = price * 0.05;
+  const { doc, getDoc, setDoc } = window.dbModules;
+  const refRef = doc(window.db, "users", state.referredBy);
+  const refSnap = await getDoc(refRef);
+  if(refSnap.exists()){
+   let refData = refSnap.data();
+   await setDoc(refRef, {
+    balance: (refData.balance || 0) + comm,
+    refCommissionEarned: (refData.refCommissionEarned || 0) + comm
+   }, {merge:true});
+  }
+ }
+
+ alert("সফলভাবে কেনা হয়েছে! হিস্টরি থেকে ফাইল ডাউনলোড করে নিন।");
+ go("history");
+}
+
+let selVpn={name:"", price:0};
+function selectVpn(name, price, el){
+ selVpn={name, price};
+ document.getElementById("vpnNameInput").value=name+" (৳"+price+")";
+ document.querySelectorAll("#vpn .brand").forEach(b=>b.classList.remove("selected"));
+ el.classList.add("selected");
+}
+
+async function executeBuyVpn(){
+ if(!selVpn.name) return alert("ভিপিএন সিলেক্ট করুন");
+ const wallet=document.getElementById("vpnWallet").value;
+ const price=selVpn.price;
+
+ if(wallet === "deposit"){
+  if(state.depositBalance < price) return alert("ডিপোজিট ব্যালেন্স কম!");
+  state.depositBalance -= price;
+ } else {
+  if(state.balance < price) return alert("ইনকাম ব্যালেন্স কম!");
+  state.balance -= price;
+ }
+
+ const fileData = `=== VPN ACCOUNT (${selVpn.name}) ===\nValidity: 7 Days\nEmail: vpn_${Math.random().toString().slice(2,8)}@vpngate.net\nPassword: Pass${Math.random().toString().slice(2,8)}\n=================================`;
+
+ state.history.unshift({
+  type: selVpn.name + " (7 Days)",
+  details: `VPN Account • Auto Delivered`,
+  amount: price,
+  status: "Approved",
+  fileContent: fileData,
+  time: new Date().toLocaleString()
+ });
+ saveState();
+
+ // 5% Referral Commission
+ if(state.referredBy && window.db){
+  let comm = price * 0.05;
+  const { doc, getDoc, setDoc } = window.dbModules;
+  const refRef = doc(window.db, "users", state.referredBy);
+  const refSnap = await getDoc(refRef);
+  if(refSnap.exists()){
+   let refData = refSnap.data();
+   await setDoc(refRef, {
+    balance: (refData.balance || 0) + comm,
+    refCommissionEarned: (refData.refCommissionEarned || 0) + comm
+   }, {merge:true});
+  }
+ }
+
+ alert("ভিপিএন সফলভাবে কেনা হয়েছে!");
+ go("history");
+}
+
+function downloadFile(content, title){
+ const blob = new Blob([decodeURIComponent(content)], {type: 'text/plain'});
+ const url = window.URL.createObjectURL(blob);
+ const a = document.createElement('a');
+ a.href = url;
+ a.download = title.replace(/\s+/g, '_') + "_details.txt";
+ document.body.appendChild(a);
+ a.click();
+ document.body.removeChild(a);
+}
+
+async function submitDepositReq(){
+ const amt = Number(document.getElementById("depAmount").value);
+ const sender = document.getElementById("depSender").value;
+ const trx = document.getElementById("depTrx").value;
+ if(!selDepMethod || !amt || !trx) return alert("সব তথ্য পূরণ করুন");
+
+ state.history.unshift({
+  type: "Deposit ("+selDepMethod+")",
+  details: `TrxID: ${trx} • Sender: ${sender}`,
+  amount: amt,
+  status: "Pending",
+  time: new Date().toLocaleString()
+ });
+ saveState();
+
+ if(window.db){
+  const { collection, addDoc } = window.dbModules;
+  await addDoc(collection(window.db, "admin_deposits"), {
+   userId, userName, method: selDepMethod, amount: amt, sender, trxId: trx, status: "Pending", time: new Date().toLocaleString()
+  });
+ }
+ alert("ডিপোজিট রিকোয়েস্ট জমা হয়েছে!");
+ go("history");
+}
+
+function go(id){
+ document.querySelectorAll(".page").forEach(p=>p.classList.remove("active"));
+ document.getElementById(id).classList.add("active");
+ window.scrollTo(0,0);
+}
+
+setTimeout(loadAppData, 800);
+</script>
+</body>
+</html>
+
+<html lang="bn">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Refe X Earn - Pro Store & Earning</title>
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <style>
